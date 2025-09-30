@@ -1,39 +1,23 @@
-import { html, useState } from '@pionjs/pion';
+import { html } from '@pionjs/pion';
 
 import './components/cocktail-list';
 import './components/search-bar';
 import './components/shopping-list';
 
-import { searchCocktailsByName } from './services/cocktails-service';
-
-import type { Cocktail } from './types/cocktail';
+import { useCocktailSearch } from './hooks/use-cocktail-search';
 
 export default function App() {
-  const [cocktails, setCocktails] = useState<Cocktail[]>([]);
-  const [error, setError] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [hasSearched, setHasSearched] = useState<boolean>(false);
-
-  const handleCocktailSearch = async (searchTerm: string) => {
-    setIsLoading(true);
-    setError(null);
-    setHasSearched(true);
-
-    try {
-      const { drinks } = await searchCocktailsByName(searchTerm);
-      setCocktails(Array.isArray(drinks) ? drinks : []);
-    } catch (err) {
-      console.error('Error loading cocktails:', err);
-      setError('Unable to load cocktails. Please try again.');
-      setCocktails([]);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  const {
+    cocktails,
+    error,
+    isLoading,
+    hasSearched,
+    searchCocktails
+  } = useCocktailSearch();
 
   return html`
     <main>
-      <search-bar .onCocktailSearch=${handleCocktailSearch}></search-bar>
+      <search-bar .onCocktailSearch=${searchCocktails}></search-bar>
       <shopping-list></shopping-list>
       
       ${isLoading ? html`<div>Searching...</div>` : null}

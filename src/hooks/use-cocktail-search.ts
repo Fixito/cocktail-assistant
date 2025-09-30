@@ -1,4 +1,4 @@
-import { useEffect, useState } from '@pionjs/pion';
+import { useState } from '@pionjs/pion';
 
 import { searchCocktailsByName } from '../services/cocktails-service';
 
@@ -17,46 +17,23 @@ export function useCocktailSearch(): UseCocktailSearchReturn {
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [hasSearched, setHasSearched] = useState<boolean>(false);
-  const [searchTerm, setSearchTerm] = useState<string>('');
 
-  useEffect(() => {
-    if (!searchTerm) return;
+  const searchCocktails = async (searchTerm: string) => {
+    setIsLoading(true);
+    setError(null);
+    setHasSearched(true);
 
-    let ignore = false;
-
-    const performSearch = async () => {
-      setIsLoading(true);
-      setError(null);
-      setHasSearched(true);
-
-      try {
-        const { drinks } = await searchCocktailsByName(searchTerm);
-
-        if (!ignore) {
-          setCocktails(Array.isArray(drinks) ? drinks : []);
-        }
-      } catch (err) {
-        if (!ignore) {
-          console.error('Error loading cocktails:', err);
-          setError('Unable to load cocktails. Please try again.');
-          setCocktails([]);
-        }
-      } finally {
-        if (!ignore) {
-          setIsLoading(false);
-        }
-      }
-    };
-
-    performSearch();
-
-    return () => {
-      ignore = true;
-    };
-  }, [searchTerm]);
-
-  const searchCocktails = (term: string) => {
-    setSearchTerm(term);
+    try {
+      const { drinks } = await searchCocktailsByName(searchTerm);
+      const searchResult = Array.isArray(drinks) ? drinks : [];
+      setCocktails(searchResult);
+    } catch (err) {
+      console.error('Error loading cocktails:', err);
+      setError('Unable to load cocktails. Please try again.');
+      setCocktails([]);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return {

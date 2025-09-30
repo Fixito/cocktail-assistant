@@ -10,6 +10,7 @@ interface SearchBarProps {
 
 function SearchBar({ onCocktailSearch }: SearchBarProps) {
   const [searchTerm, setSearchTerm] = useState("");
+  const [lastSearchTerm, setLastSearchTerm] = useState("");
 
   const handleInputChange = (e: Event) => {
     const value = (e.target as HTMLInputElement).value;
@@ -18,7 +19,18 @@ function SearchBar({ onCocktailSearch }: SearchBarProps) {
 
   const handleSubmit = (e: Event) => {
     e.preventDefault();
-    onCocktailSearch(searchTerm);
+    const trimmedTerm = searchTerm.trim();
+
+    if (!trimmedTerm) {
+      return;
+    }
+
+    if (trimmedTerm === lastSearchTerm) {
+      return;
+    }
+
+    setLastSearchTerm(trimmedTerm);
+    onCocktailSearch(trimmedTerm);
   };
 
   return html`

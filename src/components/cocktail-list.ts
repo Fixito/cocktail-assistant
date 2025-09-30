@@ -3,21 +3,47 @@ import {
   html
 } from '@pionjs/pion';
 
-function CocktailList() {
+import type { Cocktail } from '../types/cocktail';
+
+interface CocktailListProps {
+  cocktails: Cocktail[];
+  hasSearched?: boolean;
+}
+
+function CocktailList({ cocktails, hasSearched = false }: CocktailListProps) {
+  if (!cocktails.length && hasSearched) {
+    return html`
+      <section>
+        <p>No cocktails found.</p>
+      </section>`;
+  }
+
+  if (!cocktails.length && !hasSearched) {
+    return html`
+      <section>
+        <p>Search for cocktails to get started!</p>
+      </section>`;
+  }
+
   return html`
     <section>
-      <cocktail-card></cocktail-card>
+      <h2>Cocktail List</h2>
+      ${cocktails.map(cocktail => html`<cocktail-card .cocktail=${cocktail}></cocktail-card>`)}
     </section>
   `;
 }
 
 customElements.define('cocktail-list', component(CocktailList));
 
-function CocktailCard() {
+function CocktailCard({ cocktail }: { cocktail: Cocktail }) {
+  const { strDrink, strDrinkThumb, strInstructions } = cocktail;
+
   return html`
     <article>
-      <h3>Cocktail card</h3>
-      <button type="button">Add</button>
+      <img src="${strDrinkThumb}" alt="${strDrink}" width="100" height="100" />
+      <h3>${strDrink}</h3>
+      <p>${strInstructions}</p>
+      <button>Add</button>
     </article>
   `;
 }

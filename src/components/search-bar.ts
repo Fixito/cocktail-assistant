@@ -19,6 +19,7 @@ function SearchBar({ onCocktailSearch }: SearchBarProps) {
 
   const handleSubmit = (e: Event) => {
     e.preventDefault();
+
     const trimmedTerm = searchTerm.trim();
 
     if (!trimmedTerm) {
@@ -34,17 +35,22 @@ function SearchBar({ onCocktailSearch }: SearchBarProps) {
   };
 
   return html`
-    <div>
+    <section>
+      <h2>Search Cocktails</h2>
+
       <form @submit=${handleSubmit}>
-        <input
-          type="search"
-          placeholder="Search cocktails..."
-          .value=${searchTerm}
-          @input=${handleInputChange}
-        />
-        <button>Search</button>
+          <label for="search">Cocktail name</label>
+          <input
+            type="search"
+            id="search"
+            placeholder="Search cocktails..."
+            .value=${searchTerm}
+            @input=${handleInputChange}
+            autofocus
+          />
+          <button type="submit">Search</button>
       </form>
-    </div>
+    </section>
   `;
 }
 

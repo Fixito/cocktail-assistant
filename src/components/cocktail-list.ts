@@ -15,26 +15,29 @@ function CocktailList({ cocktails, hasSearched = false, onAddCocktail }: Cocktai
   if (!cocktails.length && hasSearched) {
     return html`
       <section>
-        <p>No cocktails found.</p>
+        <h2>No cocktails found.</h2>
       </section>`;
   }
 
   if (!cocktails.length && !hasSearched) {
     return html`
       <section>
-        <p>Search for cocktails to get started!</p>
+        <h2>Search for cocktails to get started!</h2>
       </section>`;
   }
 
   return html`
     <section>
       <h2>Cocktail List</h2>
-      ${cocktails.map(cocktail => html`
-        <cocktail-card 
-          .cocktail=${cocktail}
-          .onAddCocktail=${onAddCocktail}
-        ></cocktail-card>
-      `)}
+      
+      <div>
+        ${cocktails.map(cocktail => html`
+          <cocktail-card 
+            .cocktail=${cocktail}
+            .onAddCocktail=${onAddCocktail}
+          ></cocktail-card>
+        `)}
+      </div>
     </section>
   `;
 }
@@ -55,7 +58,14 @@ function CocktailCard({ cocktail, onAddCocktail }: CocktailCardProps) {
 
   return html`
     <article>
-      <img src="${strDrinkThumb}" alt="${strDrink}" width="100" height="100" />
+      <div>
+        <img 
+          src="${strDrinkThumb}" 
+          alt="${strDrink}" 
+          width="100" 
+          height="100" 
+        />
+      </div>
       <h3>${strDrink}</h3>
       <p>${strInstructions}</p>
       <button @click=${handleAdd}>Add to Shopping List</button>

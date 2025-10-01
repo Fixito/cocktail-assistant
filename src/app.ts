@@ -26,6 +26,7 @@ export default function App() {
   return html`
     <main>
       <search-bar .onCocktailSearch=${searchCocktails}></search-bar>
+
       <shopping-list 
         .items=${shoppingListItems} 
         .removeItem=${removeItem}
@@ -34,11 +35,7 @@ export default function App() {
       
       ${isLoading ? html`<div>Searching...</div>` : null}
       
-      ${error ? html`
-        <div class="error">
-          <p>${error}</p>
-        </div>
-      ` : null}
+      ${error ? html`<div>${error}</div>` : null}
       
       <cocktail-list 
         .cocktails=${cocktails} 

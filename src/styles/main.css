@@ -1,0 +1,45 @@
+.print-only {
+  display: none;
+}
+
+@media print {
+  body > *:not(#print-shopping-list) {
+    display: none;
+  }
+
+  /* Print shopping list */
+  #print-shopping-list {
+    display: block;
+  }
+
+  /* Header */
+  .print-header {
+    text-align: center;
+    border-block-end: 1px solid #333;
+    padding-block-end: 1rem;
+  }
+
+  /* Ingredient list */
+  .print-ingredients {
+    padding-block: 3rem;
+    margin: 0;
+  }
+
+  .print-ingredients li:not(:last-child) {
+    border-bottom: 1px solid #eee;
+  }
+
+  .print-ingredients li {
+    list-style: none;
+    padding-block: 1rem;
+  }
+
+  .print-ingredients li:before {
+    content: '☐';
+    margin-inline-end: 1rem;
+  }
+
+  .print-ingredient-name {
+    font-weight: 500;
+  }
+}

@@ -1,5 +1,7 @@
 import { useState } from '@pionjs/pion';
 
+import { showToast } from '../components/toaster';
+
 import { searchCocktailsByName } from '../services/cocktails-service';
 
 import type { Cocktail } from '../types/cocktail';
@@ -23,14 +25,21 @@ export function useCocktailSearch(): UseCocktailSearchReturn {
     setError(null);
     setHasSearched(true);
 
+    showToast('Searching...', 'info', 1000);
+
     try {
       const { drinks } = await searchCocktailsByName(searchTerm);
       const searchResult = Array.isArray(drinks) ? drinks : [];
       setCocktails(searchResult);
+
+      if (!searchResult.length) {
+        showToast('No cocktails found for your search.', 'info');
+      }
     } catch (err) {
       console.error('Error loading cocktails:', err);
       setError('Unable to load cocktails. Please try again.');
       setCocktails([]);
+      showToast('Error searching cocktails. Please try again.', 'error');
     } finally {
       setIsLoading(false);
     }

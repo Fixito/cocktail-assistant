@@ -3,6 +3,7 @@ import { html } from '@pionjs/pion';
 import './components/cocktail-list';
 import './components/search-bar';
 import './components/shopping-list';
+import './components/toaster';
 
 import { useCocktailSearch } from './hooks/use-cocktail-search';
 import { useShoppingList } from './hooks/use-shopping-list';
@@ -42,6 +43,8 @@ export default function App() {
         .hasSearched=${hasSearched}
         .onAddCocktail=${addCocktailToShoppingList}
       ></cocktail-list>
+      
+      <app-toaster></app-toaster>
     </main>
   `;
 }

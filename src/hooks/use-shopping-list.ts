@@ -1,5 +1,7 @@
 import { useState } from '@pionjs/pion';
 
+import { showToast } from '../components/toaster';
+
 import type { Cocktail } from '../types/cocktail';
 
 export interface ShoppingListItem {
@@ -32,16 +34,25 @@ export function useShoppingList(): UseShoppingListReturn {
 
   const addCocktailToShoppingList = (cocktail: Cocktail) => {
     const newIngredients = extractIngredients(cocktail);
+    let addedCount = 0;
 
     setIngredientsSet(currentSet => {
       const updatedSet = new Set(currentSet);
+      const initialSize = updatedSet.size;
 
       newIngredients.forEach(ingredientName => {
         updatedSet.add(ingredientName.toLowerCase());
       });
 
+      addedCount = updatedSet.size - initialSize;
       return updatedSet;
     });
+
+    if (addedCount > 0) {
+      showToast(`Added ${addedCount} new ingredient${addedCount > 1 ? 's' : ''} from ${cocktail.strDrink} to shopping list`, 'success');
+    } else {
+      showToast(`All ingredients from ${cocktail.strDrink} were already in your list`, 'info');
+    }
   };
 
   const removeItem = (ingredient: string) => {
@@ -50,10 +61,17 @@ export function useShoppingList(): UseShoppingListReturn {
       updatedSet.delete(ingredient.toLowerCase());
       return updatedSet;
     });
+
+    showToast(`Removed ${ingredient} from shopping list`, 'success');
   };
 
   const clearShoppingList = () => {
+    const itemCount = ingredientsSet.size;
     setIngredientsSet(new Set());
+
+    if (itemCount > 0) {
+      showToast(`Cleared shopping list`, 'success');
+    }
   };
 
   const items: ShoppingListItem[] = Array.from(ingredientsSet).map(ingredient => ({

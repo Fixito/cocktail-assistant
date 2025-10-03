@@ -49,9 +49,9 @@ export function useShoppingList(): UseShoppingListReturn {
     });
 
     if (addedCount > 0) {
-      showToast(`Added ${addedCount} new ingredient${addedCount > 1 ? 's' : ''} from ${cocktail.strDrink} to shopping list`, 'success');
+      showToast(`Added ${addedCount} new ingredient${addedCount > 1 ? 's' : ''} to shopping list`, 'success');
     } else {
-      showToast(`All ingredients from ${cocktail.strDrink} were already in your list`, 'info');
+      showToast(`All ingredients were already in your list`, 'info');
     }
   };
 

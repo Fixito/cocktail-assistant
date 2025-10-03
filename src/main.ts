@@ -6,5 +6,4 @@ import App from "../src/app";
 
 import './styles/main.css';
 
-
-customElements.define('my-app', component(App));
+customElements.define('my-app', component(App, { useShadowDOM: false }));

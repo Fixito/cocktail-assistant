@@ -1,0 +1,11 @@
+# Cocktail Assistant - Robots.txt
+# This file tells search engine crawlers which URLs they can access on your site.
+
+User-agent: *
+Allow: /
+
+# Sitemap location (optionnel - ajoutez quand vous aurez un sitemap)
+# Sitemap: https://yourdomaine.com/sitemap.xml
+
+# Crawl delay (optionnel - délai entre les requêtes en secondes)
+# Crawl-delay: 1

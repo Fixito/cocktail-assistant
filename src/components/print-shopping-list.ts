@@ -45,9 +45,9 @@ function PrintShoppingList({ items }: PrintShoppingListProps) {
       title="Print shopping list"
       @click=${handlePrint}
     >
-      Print Shopping List
+      Print
     </button>
   `;
 }
 
-customElements.define('print-shopping-list', component(PrintShoppingList));
+customElements.define('print-shopping-list', component(PrintShoppingList, { useShadowDOM: false }));

@@ -36,22 +36,24 @@ function SearchBar({ onCocktailSearch }: SearchBarProps) {
 
   return html`
     <section>
-      <h2>Search Cocktails</h2>
-
+      <h2 class="sr-only">Search Cocktails</h2>
+    
       <form @submit=${handleSubmit}>
-          <label for="search">Cocktail name</label>
+        <div class="input-group">
+          <label for="search" class="sr-only">Cocktail name</label>
           <input
-            type="search"
-            id="search"
-            placeholder="Search cocktails..."
-            .value=${searchTerm}
-            @input=${handleInputChange}
-            autofocus
+          type="search"
+          id="search"
+          placeholder="Search cocktails..."
+          .value=${searchTerm}
+          @input=${handleInputChange}
+          autofocus
           />
-          <button type="submit">Search</button>
-      </form>
+          <button type="submit" class="search-btn">Search</button>
+        </div>
+        </form>
     </section>
   `;
 }
 
-customElements.define('search-bar', component(SearchBar));
+customElements.define('search-bar', component(SearchBar, { useShadowDOM: false }));

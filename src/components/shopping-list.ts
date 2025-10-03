@@ -17,9 +17,12 @@ function ShoppingList({ items, removeItem, clearShoppingList }: ShoppingListProp
 
   if (!items.length) {
     return html`
-      <section>
-        <h2>Shopping List</h2>
-        <p>
+      <section class="shopping-list-section">
+        <header>
+          <h2>Shopping List</h2>
+        </header>
+
+        <p class="text-muted text-center">
           No ingredients added yet. Add cocktails to build your shopping list!
         </p>
       </section>
@@ -27,30 +30,33 @@ function ShoppingList({ items, removeItem, clearShoppingList }: ShoppingListProp
   }
 
   return html`
-    <section>
+    <section class="shopping-list-section">
       <header>
         <h2>Shopping List</h2>
       </header>
 
-      <ul>
+      <ul class="shopping-list">
         ${items.map((item) => html`
-          <li>
+          <li class="shopping-list__item">
             <span>${item.ingredient}</span>
             <button 
               type="button" 
               title="Remove item"
               @click=${() => removeItem(item.ingredient)}
-            >x</button>
+              data-variant="secondary"
+            >
+              &times;
+            </button>
           </li>
         `)}
       </ul>
 
-      <div>
+      <div class="shopping-list__actions">
         <print-shopping-list .items=${items}></print-shopping-list>
-        <button type="button" @click=${clearShoppingList}>Clear All</button>
+        <button type="button" data-variant="soft" @click=${clearShoppingList}>Clear All</button>
       </div>
     </section>
   `;
 }
 
-customElements.define('shopping-list', component(ShoppingList));
+customElements.define('shopping-list', component(ShoppingList, { useShadowDOM: false }));

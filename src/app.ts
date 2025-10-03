@@ -25,26 +25,30 @@ export default function App() {
   } = useShoppingList();
 
   return html`
-    <main>
+    <main class="container">
       <search-bar .onCocktailSearch=${searchCocktails}></search-bar>
 
-      <shopping-list 
-        .items=${shoppingListItems} 
-        .removeItem=${removeItem}
-        .clearShoppingList=${clearShoppingList}
-      ></shopping-list>
-      
-      ${isLoading ? html`<div>Searching...</div>` : null}
-      
-      ${error ? html`<div>${error}</div>` : null}
-      
-      <cocktail-list 
-        .cocktails=${cocktails} 
-        .hasSearched=${hasSearched}
-        .onAddCocktail=${addCocktailToShoppingList}
-      ></cocktail-list>
-      
+      <div class="content">
+        <shopping-list 
+          .items=${shoppingListItems} 
+          .removeItem=${removeItem}
+          .clearShoppingList=${clearShoppingList}
+        ></shopping-list>
+        
+        ${isLoading ? html`<div class="loading"></div>` : null}
+
+        ${error ? html`<div class="text-center">${error}</div>` : null}
+  
+        ${!isLoading && !error ? html`
+          <cocktail-list
+            .cocktails=${cocktails} 
+            .hasSearched=${hasSearched}
+            .onAddCocktail=${addCocktailToShoppingList}
+          ></cocktail-list>
+        ` : null}
+      </div>
+  
       <app-toaster></app-toaster>
-    </main>
-  `;
+      </main>
+    `;
 }

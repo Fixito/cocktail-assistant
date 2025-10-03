@@ -14,35 +14,37 @@ interface CocktailListProps {
 function CocktailList({ cocktails, hasSearched = false, onAddCocktail }: CocktailListProps) {
   if (!cocktails.length && hasSearched) {
     return html`
-      <section>
-        <h2>No cocktails found.</h2>
+      <section class="cocktail-list-section">
+        <h2 class="sr-only">Cocktail List</h2>
+        <p class="text-muted text-center">No cocktails found.</p>
       </section>`;
   }
 
   if (!cocktails.length && !hasSearched) {
     return html`
-      <section>
-        <h2>Search for cocktails to get started!</h2>
+      <section class="cocktail-list-section">
+        <h2 class="sr-only">Cocktail List</h2>
+        <p class="text-muted text-center">Search for cocktails to get started!</p>
       </section>`;
   }
 
   return html`
-    <section>
-      <h2>Cocktail List</h2>
+    <section class="cocktail-list-section">
+      <h2 class="sr-only">Cocktail List</h2>
       
-      <div>
+      <ul class="cocktail-list">
         ${cocktails.map(cocktail => html`
           <cocktail-card 
             .cocktail=${cocktail}
             .onAddCocktail=${onAddCocktail}
           ></cocktail-card>
         `)}
-      </div>
+      </ul>
     </section>
   `;
 }
 
-customElements.define('cocktail-list', component(CocktailList));
+customElements.define('cocktail-list', component(CocktailList, { useShadowDOM: false }));
 
 interface CocktailCardProps {
   cocktail: Cocktail;
@@ -57,21 +59,28 @@ function CocktailCard({ cocktail, onAddCocktail }: CocktailCardProps) {
   };
 
   return html`
-    <article>
-      <div>
-        <img 
-          src="${strDrinkThumb}" 
-          alt="${strDrink}" 
-          width="100" 
-          height="100" 
-        />
+    <li class="cocktail-card">
+      <img 
+        src="${strDrinkThumb}" 
+        alt="${strDrink}" 
+        class="img"
+      />
+      <div class="cocktail-card__body">
+        <h3 class="cocktail-card__title">${strDrink}</h3>
+        <p class="cocktail-card__instructions">${strInstructions}</p>
+        <div class="cocktail-card__btn-container">
+          <button 
+            title="Add to Shopping List" 
+            @click=${handleAdd}    
+            class="cocktail-card__btn"
+          >
+            +
+          </button>
+        </div>
       </div>
-      <h3>${strDrink}</h3>
-      <p>${strInstructions}</p>
-      <button @click=${handleAdd}>Add to Shopping List</button>
-    </article>
+    </li>
   `;
 }
 
-customElements.define('cocktail-card', component(CocktailCard));
+customElements.define('cocktail-card', component(CocktailCard, { useShadowDOM: false }));
 

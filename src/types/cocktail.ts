@@ -1,6 +1,7 @@
 type NullableString = string | null;
 
-export interface Cocktail {
+// Interface for raw API data (all properties)
+export interface ApiCocktail {
   idDrink: string;
   strDrink: string;
   strDrinkAlternate: NullableString;
@@ -38,7 +39,6 @@ export interface Cocktail {
   strIngredient14: NullableString;
   strIngredient15: NullableString;
 
-  // Mesures (1 à 15)
   strMeasure1: NullableString;
   strMeasure2: NullableString;
   strMeasure3: NullableString;
@@ -61,6 +61,51 @@ export interface Cocktail {
   dateModified: NullableString;
 }
 
-export interface CocktailResponse {
-  drinks: Cocktail[] | string;
+// Optimized interface for the application (only used data)
+export interface Cocktail {
+  id: string;
+  name: string;
+  image: string;
+  instructions: string;
+  ingredients: string[];
+}
+
+// Interface for API response
+export interface ApiCocktailResponse {
+  drinks: ApiCocktail[] | string;
+}
+
+/**
+ * Transforms raw API data into optimized format for the application
+ */
+export function transformCocktail(apiCocktail: ApiCocktail): Cocktail {
+  // Extract non-empty ingredients
+  const ingredients: string[] = [];
+
+  for (let i = 1; i <= 15; i++) {
+    const ingredient = apiCocktail[`strIngredient${i}` as keyof ApiCocktail] as string;
+
+    if (ingredient && ingredient.trim()) {
+      ingredients.push(ingredient.trim());
+    }
+  }
+
+  return {
+    id: apiCocktail.idDrink,
+    name: apiCocktail.strDrink,
+    image: apiCocktail.strDrinkThumb || '',
+    instructions: apiCocktail.strInstructions || '',
+    ingredients
+  };
+}
+
+/**
+ * Transforms the complete API response
+ */
+export function transformCocktailResponse(apiResponse: ApiCocktailResponse): Cocktail[] {
+  if (typeof apiResponse.drinks === 'string' || !apiResponse.drinks) {
+    return [];
+  }
+
+  return apiResponse.drinks.map(transformCocktail);
 }

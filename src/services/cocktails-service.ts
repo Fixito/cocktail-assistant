@@ -1,8 +1,9 @@
-import type { CocktailResponse } from "../types/cocktail";
+import type { ApiCocktailResponse, Cocktail } from "../types/cocktail";
+import { transformCocktailResponse } from "../types/cocktail";
 
 const URL = 'https://www.thecocktaildb.com/api/json/v1/1/search.php?s=';
 
-export async function searchCocktailsByName(searchTerm: string): Promise<CocktailResponse> {
+export async function searchCocktailsByName(searchTerm: string): Promise<Cocktail[]> {
   try {
     const response = await fetch(`${URL}${searchTerm}`);
 
@@ -10,8 +11,11 @@ export async function searchCocktailsByName(searchTerm: string): Promise<Cocktai
       throw new Error(`HTTP error! status: ${response.status}`);
     }
 
-    const data = await response.json();
-    return data;
+    const data: ApiCocktailResponse = await response.json();
+
+    const cocktails = transformCocktailResponse(data);
+
+    return cocktails;
   } catch (error) {
     console.error('Error fetching cocktails:', error);
     throw error;

@@ -28,8 +28,7 @@ export function useCocktailSearch(): UseCocktailSearchReturn {
     showToast('Searching...', 'info', 1000);
 
     try {
-      const { drinks } = await searchCocktailsByName(searchTerm);
-      const searchResult = Array.isArray(drinks) ? drinks : [];
+      const searchResult = await searchCocktailsByName(searchTerm);
       setCocktails(searchResult);
 
       if (!searchResult.length) {

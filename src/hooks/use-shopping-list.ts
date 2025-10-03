@@ -18,22 +18,8 @@ interface UseShoppingListReturn {
 export function useShoppingList(): UseShoppingListReturn {
   const [ingredientsSet, setIngredientsSet] = useState<Set<string>>(new Set());
 
-  const extractIngredients = (cocktail: Cocktail): string[] => {
-    const ingredients: string[] = [];
-
-    for (let i = 1; i <= 15; i++) {
-      const ingredient = cocktail[`strIngredient${i}` as keyof Cocktail] as string;
-
-      if (ingredient && ingredient.trim()) {
-        ingredients.push(ingredient.trim());
-      }
-    }
-
-    return ingredients;
-  };
-
   const addCocktailToShoppingList = (cocktail: Cocktail) => {
-    const newIngredients = extractIngredients(cocktail);
+    const newIngredients = cocktail.ingredients;
     let addedCount = 0;
 
     setIngredientsSet(currentSet => {

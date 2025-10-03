@@ -52,7 +52,7 @@ interface CocktailCardProps {
 }
 
 function CocktailCard({ cocktail, onAddCocktail }: CocktailCardProps) {
-  const { strDrink, strDrinkThumb, strInstructions } = cocktail;
+  const { name, image, instructions } = cocktail;
 
   const handleAdd = () => {
     onAddCocktail(cocktail);
@@ -61,13 +61,13 @@ function CocktailCard({ cocktail, onAddCocktail }: CocktailCardProps) {
   return html`
     <li class="cocktail-card">
       <img 
-        src="${strDrinkThumb}" 
-        alt="${strDrink}" 
+        src="${image}" 
+        alt="${name}" 
         class="img"
       />
       <div class="cocktail-card__body">
-        <h3 class="cocktail-card__title">${strDrink}</h3>
-        <p class="cocktail-card__instructions">${strInstructions}</p>
+        <h3 class="cocktail-card__title">${name}</h3>
+        <p class="cocktail-card__instructions">${instructions}</p>
         <div class="cocktail-card__btn-container">
           <button 
             title="Add to Shopping List" 
